@@ -2,7 +2,7 @@
 '''
 from __future__ import division, print_function, absolute_import
 
-from keras.regularizers import l1l2
+from keras.regularizers import L1L2
 from keras.layers import Input, merge, Dense, Dropout, BatchNormalization
 from keras import models
 
@@ -184,8 +184,8 @@ def build_graph_conv_net(data_input,
 			fp_atoms_in = ConvDropout(fp_dropout)(fp_atoms_in)
 
 		fp_out = NeuralGraphOutput(fp_size, activation=fp_activation, bias=fp_bias,
-								   W_regularizer=l1l2(fp_l1, fp_l2),
-								   b_regularizer=l1l2(fp_l1, fp_l2),
+								   W_regularizer=L1L2(fp_l1, fp_l2),
+								   b_regularizer=L1L2(fp_l1, fp_l2),
 								   **fp_kwargs)([fp_atoms_in, bonds, edges])
 		fingerprint_outputs.append(fp_out)
 
@@ -210,8 +210,8 @@ def build_graph_conv_net(data_input,
 		# 	the most powerfull (e.g. allows custom activation functions)
 		def inner_layer_fn():
 			return Dense(conv_size, activation=conv_activation, bias=conv_bias,
-						 W_regularizer=l1l2(conv_l1, conv_l2),
-						 b_regularizer=l1l2(conv_l1, conv_l2), **conv_kwargs)
+						 W_regularizer=L1L2(conv_l1, conv_l2),
+						 b_regularizer=L1L2(conv_l1, conv_l2), **conv_kwargs)
 		atoms_out = NeuralGraphHidden(inner_layer_fn)([atoms_in, bonds, edges])
 
 		if graphpool:
@@ -230,8 +230,8 @@ def build_graph_conv_net(data_input,
 				fp_atoms_in = ConvDropout(fp_dropout)(fp_atoms_in)
 
 			fp_out = NeuralGraphOutput(fp_size, activation=fp_activation, bias=fp_bias,
-									   W_regularizer=l1l2(fp_l1, fp_l2),
-									   b_regularizer=l1l2(fp_l1, fp_l2),
+									   W_regularizer=L1L2(fp_l1, fp_l2),
+									   b_regularizer=L1L2(fp_l1, fp_l2),
 									   **fp_kwargs)([fp_atoms_in, bonds, edges])
 
 			# Export
@@ -261,8 +261,8 @@ def build_graph_conv_net(data_input,
 			net_in = Dropout(net_dropout)(net_in)
 
 		net_out = Dense(layer_size, activation=net_activation, bias=net_bias,
-						W_regularizer=l1l2(net_l1, net_l2),
-						b_regularizer=l1l2(net_l1, net_l2), **net_kwargs)(net_in)
+						W_regularizer=L1l2(net_l1, net_l2),
+						b_regularizer=L1L2(net_l1, net_l2), **net_kwargs)(net_in)
 
 		# Export
 		net_outputs.append(net_out)
